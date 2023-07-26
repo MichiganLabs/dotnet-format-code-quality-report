@@ -34,9 +34,13 @@ public CodeQualityEntry ConvertFormatEntryToCodeQualityEntry(FormatOutputEntry e
     var diagnosticId = fileChanges.DiagnosticId;
 
     var splitDescription = fileChanges.FormatDescription.Split(new char[] { ':' }, count: 2);
-    var severityString = SeverityMapping.MapDotnetFormatSeverityToEnum(splitDescription[0].Replace(diagnosticId, "").Trim());
-    var severity = SeverityMapping.MapSeverityToCodeQualityString(severityString);
-    var description = splitDescription[1].Trim();
+
+    // If there's no severity at all, by default map to a warning
+    var severityString = splitDescription.Count() == 2 ? splitDescription[0].Replace(diagnosticId, "").Trim() : "warning";
+    var mappedSeverityString = SeverityMapping.MapDotnetFormatSeverityToEnum(severityString);
+    var severity = SeverityMapping.MapSeverityToCodeQualityString(mappedSeverityString);
+
+    var description = splitDescription.Last().Trim();
 
     // fingerprint should be hash of file ID + diagnostic ID + line number + char number
     var fingerprintData = $"{entry.DocumentId.Id}-{fileChanges.DiagnosticId}-{fileChanges.LineNumber}-{fileChanges.CharNumber}";
