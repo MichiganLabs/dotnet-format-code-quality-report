@@ -35,8 +35,8 @@ public CodeQualityEntry ConvertFormatEntryToCodeQualityEntry(FormatOutputEntry e
 
     var splitDescription = fileChanges.FormatDescription.Split(new char[] { ':' }, count: 2);
 
-    // If there's no severity at all, by default map to a warning
-    var severityString = splitDescription.Count() == 2 ? splitDescription[0].Replace(diagnosticId, "").Trim() : "warning";
+    // If there's no severity at all, by default map to a error
+    var severityString = splitDescription.Count() == 2 ? splitDescription[0].Replace(diagnosticId, "").Trim() : "error";
     var mappedSeverityString = SeverityMapping.MapDotnetFormatSeverityToEnum(severityString);
     var severity = SeverityMapping.MapSeverityToCodeQualityString(mappedSeverityString);
 
