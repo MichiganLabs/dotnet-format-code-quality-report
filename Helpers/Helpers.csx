@@ -43,7 +43,7 @@ public CodeQualityEntry ConvertFormatEntryToCodeQualityEntry(FormatOutputEntry e
     var description = splitDescription.Last().Trim();
 
     // fingerprint should be hash of file ID + diagnostic ID + line number + char number
-    var fingerprintData = $"{entry.DocumentId.Id}-{fileChanges.DiagnosticId}-{fileChanges.LineNumber}-{fileChanges.CharNumber}";
+    var fingerprintData = $"{entry.FilePath}-{fileChanges.DiagnosticId}-{fileChanges.LineNumber}-{fileChanges.CharNumber}";
     var fingerprint = ComputeSHA256(fingerprintData);
 
     return new CodeQualityEntry()
